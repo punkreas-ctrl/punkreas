@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Punkreas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Dirt&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Fanzine fotocopiado: negro pleno, tinta blanca, todo alineado a la izquierda sobre una columna; la rata manda */
+:root {
+  --tinta-fondo: #0b0a0a;
+  --tinta: #f4f2ee;
+  --tinta-media: #bdb8b0;
+  --tinta-baja: #77726b;
+  --linea: #3a3734;
+  --sensor: #26231f;
+  --f-marca: "Rubik Dirt", "Arial Black", Impact, sans-serif;
+  --f-sello: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+  --f-texto: "IBM Plex Mono", ui-monospace, "Courier New", monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--tinta-fondo); }
+body {
+  background: var(--tinta-fondo); color: var(--tinta);
+  font-family: var(--f-texto); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: hidden;
+}
+a { color: var(--tinta); text-underline-offset: 3px; }
+a:hover { color: var(--tinta-media); }
+:focus-visible { outline: 3px dashed var(--tinta); outline-offset: 4px; }
+.envoltura { max-width: 1080px; margin: 0 auto; }
+
+/* encabezado */
+header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 18px; border-bottom: 2px solid var(--tinta); }
+.marca-chica { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.rata-mini { width: 64px; height: auto; overflow: visible; }
+.marca-chica span { font-family: var(--f-marca); font-size: 24px; letter-spacing: 0; }
+nav ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; flex-wrap: wrap; }
+nav a { font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 3px; font-size: 20px; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+
+/* portada */
+.portada { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px; align-items: center; padding-block: 56px 48px; }
+.rata { width: 100%; height: auto; overflow: visible; display: block; }
+.portada h1 { font-family: var(--f-marca); font-weight: 400; font-size: clamp(44px, 6.4vw, 82px); line-height: 0.95; margin: 0; letter-spacing: 0; overflow-wrap: anywhere; filter: url(#tinta-m); }
+.bajada { font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 6px; font-size: 22px; margin: 14px 0 26px; color: var(--tinta-media); }
+.portada p.intro { max-width: 34ch; font-size: 19px; margin: 0 0 28px; text-wrap: pretty; }
+.boton { display: inline-block; font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 3px; font-size: 22px; padding: 12px 22px; border: 2px solid var(--tinta); background: var(--tinta); color: var(--tinta-fondo); text-decoration: none; transform: rotate(-1.5deg); }
+.boton:hover { background: var(--tinta-fondo); color: var(--tinta); }
+
+/* secciones */
+section { padding-block: 56px; border-top: 2px dashed var(--linea); }
+.rotulo { font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 5px; font-size: 18px; color: var(--tinta-baja); margin: 0 0 8px; }
+h2 { font-family: var(--f-marca); font-weight: 400; font-size: clamp(34px, 5vw, 54px); line-height: 1; margin: 0 0 28px; text-wrap: balance; }
+
+/* catálogo */
+.catalogo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.pieza { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; align-items: start; padding: 20px; border: 2px solid var(--tinta); }
+.pieza:nth-child(odd) { transform: rotate(-0.6deg); }
+.pieza:nth-child(even) { transform: rotate(0.5deg); }
+.pieza-img svg { width: 100%; height: auto; display: block; }
+.sensor { fill: var(--sensor); }
+.sensor-centro { fill: none; stroke: var(--tinta-baja); stroke-width: 0.4; }
+.linea { fill: none; stroke: var(--tinta); stroke-width: 0.45; stroke-linejoin: round; }
+.pieza h3 { font-family: var(--f-marca); font-weight: 400; font-size: 26px; line-height: 1.05; margin: 0 0 8px; }
+.pieza p { margin: 0 0 14px; color: var(--tinta-media); font-size: 15px; }
+.pieza dl { margin: 0; display: grid; gap: 4px; font-size: 14px; }
+.pieza dl div { display: flex; gap: 10px; }
+.pieza dt { font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 2px; color: var(--tinta-baja); min-width: 78px; }
+.pieza dd { margin: 0; }
+.nota { margin-top: 28px; font-size: 15px; color: var(--tinta-media); max-width: 70ch; }
+
+/* pasos */
+.pasos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; counter-reset: paso; }
+.pasos li { counter-increment: paso; border-top: 2px solid var(--tinta); padding-top: 14px; }
+.pasos li::before { content: counter(paso); font-family: var(--f-marca); font-size: 54px; line-height: 1; display: block; margin-bottom: 6px; }
+.pasos h3 { font-family: var(--f-sello); font-weight: 400; text-transform: uppercase; letter-spacing: 3px; font-size: 24px; margin: 0 0 6px; }
+.pasos p { margin: 0; color: var(--tinta-media); font-size: 15px; }
+
+/* medidas */
+.medidas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.tabla { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 15px; }
+th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--linea); }
+th { font-family: var(--f-sello); font-weight: 400; text-transform: uppercase; letter-spacing: 2px; color: var(--tinta-baja); font-size: 13px; }
+.medidas p { margin: 0 0 14px; max-width: 46ch; }
+
+/* pedidos */
+.contacto { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; max-width: 760px; }
+.dato { border: 2px solid var(--tinta); padding: 18px 20px; display: grid; gap: 10px; }
+.dato span { font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 3px; font-size: 13px; color: var(--tinta-baja); }
+.dato strong { font-size: 20px; font-weight: 700; overflow-wrap: anywhere; user-select: all; }
+.copiar { justify-self: start; font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 2px; font-size: 13px; background: transparent; color: var(--tinta); border: 1px solid var(--tinta); padding: 8px 12px; cursor: pointer; min-height: 40px; }
+.copiar:hover { background: var(--tinta); color: var(--tinta-fondo); }
+
+footer { border-top: 2px solid var(--tinta); padding-block: 22px 40px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--tinta-baja); }
+footer p { margin: 0; max-width: 60ch; }
+
+@media (max-width: 860px) {
+  .portada { grid-template-columns: minmax(0, 1fr); padding-block: 32px; }
+  .catalogo, .medidas, .contacto { grid-template-columns: minmax(0, 1fr); }
+  .pasos { grid-template-columns: minmax(0, 1fr); }
+}
+/* a medida */
+.juntxs { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.juntxs p { margin: 0 0 20px; max-width: 52ch; font-size: 18px; }
+.ideas { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ideas li { border: 2px dashed var(--tinta-baja); padding: 12px 16px; font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 3px; font-size: 20px; }
+.dato .boton { justify-self: start; font-size: 19px; padding: 10px 18px; transform: none; }
+.dato-usuario { font-size: 22px; font-weight: 600; overflow-wrap: anywhere; }
+.medida-caja { max-width: 62ch; border: 2px dashed var(--tinta); padding: 24px 26px; transform: rotate(-0.4deg); }
+.medida-caja p { margin: 0 0 16px; font-size: 18px; }
+.medida-caja .boton { margin-top: 6px; }
+.acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+.ir { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--f-sello); text-transform: uppercase; letter-spacing: 2px; font-size: 18px; padding: 8px 16px; background: var(--tinta); color: var(--tinta-fondo); border: 2px solid var(--tinta); text-decoration: none; }
+.ir:hover { background: var(--tinta-fondo); color: var(--tinta); }
+.copiar { min-height: 44px; font-size: 16px; }
+@media (max-width: 600px) {
+  .medida-caja { transform: none; padding: 18px; }
+  .medida-caja p { font-size: 16px; }
+  .acciones { flex-direction: column; }
+  .ir, .copiar { justify-content: center; width: 100%; }
+  .pieza-img { margin-inline: auto; }
+  nav ul { flex-wrap: wrap; }
+}
+
+@media (max-width: 860px) {
+  .juntxs { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  header { flex-direction: column; align-items: flex-start; gap: 8px; padding-block: 12px; }
+  nav ul { gap: 4px 18px; }
+  nav a { display: inline-block; font-size: 19px; padding-block: 8px; }
+  .portada { gap: 12px; padding-block: 20px 36px; }
+  .rata { max-width: 420px; margin: 0 auto; }
+  .portada h1 { font-size: clamp(40px, 13vw, 60px); }
+  .bajada { font-size: 18px; letter-spacing: 4px; margin: 10px 0 18px; }
+  .portada p.intro { font-size: 17px; max-width: none; }
+  .boton { display: block; text-align: center; transform: none; padding-block: 14px; }
+  section { padding-block: 40px; }
+  h2 { margin-bottom: 20px; }
+  .catalogo { gap: 18px; }
+  .pieza, .pieza:nth-child(odd), .pieza:nth-child(even) { transform: none; padding: 16px; }
+  .pasos { gap: 20px; }
+  .pasos li::before { font-size: 42px; }
+  .juntxs p { font-size: 16px; }
+  .dato .boton { justify-self: stretch; }
+  footer { flex-direction: column; }
+}
+@media (max-width: 480px) {
+  .pieza { grid-template-columns: minmax(0, 1fr); }
+  .pieza-img { max-width: 170px; }
+}
+@media (prefers-reduced-motion: reduce) { .pieza, .boton { transform: none; } }
+</style>
+</head>
+<body style="margin:0">
+
+<div class="envoltura">
+  <header>
+    <a class="marca-chica" href="#inicio" aria-label="Punkreas, inicio"><svg class="rata-mini" aria-hidden="true" viewBox="0 0 520 300"  >
+<defs>
+<filter id="tinta-m" x="-10%" y="-20%" width="120%" height="140%">
+<feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="r"></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="r" scale="5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="roto-m" x="-5%" y="-10%" width="110%" height="120%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3" result="g"></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="g" scale="4" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<pattern id="rayado-m" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)">
+<line x1="0" y1="0" x2="0" y2="5" stroke="#ffffff" stroke-width="1.4"></line>
+</pattern>
+<linearGradient id="fundido-m" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0.45" stop-color="#000000"></stop>
+<stop offset="0.85" stop-color="#ffffff"></stop>
+</linearGradient>
+<mask id="sombra-m" maskUnits="userSpaceOnUse" x="0" y="0" width="520" height="300">
+<rect x="0" y="60" width="520" height="200" fill="url(#fundido-m)"></rect>
+</mask>
+</defs>
+<g filter="url(#tinta-m)" stroke-linecap="round" stroke-linejoin="round" stroke="#ffffff">
+<path d="M 58 168 C 20 160, 6 120, 24 90 C 40 64, 30 44, 10 36" fill="none" stroke-width="3"></path>
+<path  d="M 58.0 176.0 Q 52.4 167.2 60.0 160.1 Q 56.7 151.4 62.9 144.4 Q 62.4 134.6 71.6 131.1 Q 73.8 121.2 83.9 121.0 Q 88.7 112.1 98.5 114.4 Q 106.5 107.8 114.3 114.7 Q 123.7 110.4 129.8 118.8 Q 138.3 112.7 145.7 120.1 Q 151.5 113.2 160.4 114.0 Q 164.0 105.1 173.6 105.0 Q 178.0 96.4 187.6 97.3 Q 193.4 90.3 202.4 91.1 Q 208.5 84.5 217.4 85.5 Q 223.3 77.1 232.8 81.1 Q 239.4 72.8 248.6 78.2 Q 255.8 70.9 264.5 76.3 Q 272.2 70.9 280.4 75.4 Q 288.6 69.5 296.4 75.9 Q 305.1 72.1 312.3 78.1 Q 321.6 74.0 327.8 82.0 Q 337.0 80.0 343.0 87.2 Q 352.8 84.5 357.7 93.5 Q 368.1 91.2 371.8 101.1 Q 382.3 99.8 385.1 110.1 Q 395.4 110.5 396.8 120.8 Q 406.4 124.9 403.9 135.0 Q 406.7 144.4 398.2 149.3 Q 391.2 155.8 382.9 151.0 Q 373.2 154.9 367.7 146.0 Q 358.8 147.5 352.5 140.9 Q 343.3 143.0 337.5 135.5 Q 328.0 138.5 322.3 130.4 Q 313.3 134.1 306.6 127.1 Q 298.0 132.6 290.7 125.4 Q 282.7 129.9 274.7 125.2 Q 267.3 130.4 258.8 127.3 Q 252.4 133.8 243.5 131.9 Q 239.0 141.4 228.9 138.4 Q 224.5 146.4 215.3 146.9 Q 212.5 155.7 203.4 157.6 Q 203.0 167.0 194.2 170.6 Q 197.0 180.1 188.7 185.6 Q 190.8 195.6 181.5 199.8 Q 179.9 208.7 171.6 212.4 Q 169.1 222.6 158.7 221.7 Q 152.9 230.0 143.4 226.4 Q 136.6 232.8 127.7 229.6 Q 120.6 235.5 112.0 232.4 Q 105.4 239.8 96.4 235.9 Q 92.7 245.0 82.9 244.4 Q 78.3 252.5 69.1 252.1 Q 60.2 253.9 54.3 247.2 Q 50.1 238.8 58.1 234.0 Q 52.5 226.6 58.9 219.9 Q 49.2 216.9 50.1 206.8 Q 47.0 198.2 53.1 191.2 Q 49.7 181.7 58.0 176.0 Z" fill="#000000" stroke-width="3.5"></path>
+<path d="M 58.0 176.0 Q 52.4 167.2 60.0 160.1 Q 56.7 151.4 62.9 144.4 Q 62.4 134.6 71.6 131.1 Q 73.8 121.2 83.9 121.0 Q 88.7 112.1 98.5 114.4 Q 106.5 107.8 114.3 114.7 Q 123.7 110.4 129.8 118.8 Q 138.3 112.7 145.7 120.1 Q 151.5 113.2 160.4 114.0 Q 164.0 105.1 173.6 105.0 Q 178.0 96.4 187.6 97.3 Q 193.4 90.3 202.4 91.1 Q 208.5 84.5 217.4 85.5 Q 223.3 77.1 232.8 81.1 Q 239.4 72.8 248.6 78.2 Q 255.8 70.9 264.5 76.3 Q 272.2 70.9 280.4 75.4 Q 288.6 69.5 296.4 75.9 Q 305.1 72.1 312.3 78.1 Q 321.6 74.0 327.8 82.0 Q 337.0 80.0 343.0 87.2 Q 352.8 84.5 357.7 93.5 Q 368.1 91.2 371.8 101.1 Q 382.3 99.8 385.1 110.1 Q 395.4 110.5 396.8 120.8 Q 406.4 124.9 403.9 135.0 Q 406.7 144.4 398.2 149.3 Q 391.2 155.8 382.9 151.0 Q 373.2 154.9 367.7 146.0 Q 358.8 147.5 352.5 140.9 Q 343.3 143.0 337.5 135.5 Q 328.0 138.5 322.3 130.4 Q 313.3 134.1 306.6 127.1 Q 298.0 132.6 290.7 125.4 Q 282.7 129.9 274.7 125.2 Q 267.3 130.4 258.8 127.3 Q 252.4 133.8 243.5 131.9 Q 239.0 141.4 228.9 138.4 Q 224.5 146.4 215.3 146.9 Q 212.5 155.7 203.4 157.6 Q 203.0 167.0 194.2 170.6 Q 197.0 180.1 188.7 185.6 Q 190.8 195.6 181.5 199.8 Q 179.9 208.7 171.6 212.4 Q 169.1 222.6 158.7 221.7 Q 152.9 230.0 143.4 226.4 Q 136.6 232.8 127.7 229.6 Q 120.6 235.5 112.0 232.4 Q 105.4 239.8 96.4 235.9 Q 92.7 245.0 82.9 244.4 Q 78.3 252.5 69.1 252.1 Q 60.2 253.9 54.3 247.2 Q 50.1 238.8 58.1 234.0 Q 52.5 226.6 58.9 219.9 Q 49.2 216.9 50.1 206.8 Q 47.0 198.2 53.1 191.2 Q 49.7 181.7 58.0 176.0 Z" fill="url(#rayado-m)" stroke="none" mask="url(#sombra-m)"></path>
+<path d="M 66 214 C 100 182, 150 150, 200 128 C 250 106, 320 102, 396 132" fill="none" stroke-width="3"></path>
+<path d="M 92 192 l -14 -14 M 118 172 l 8 18 M 150 152 l -10 -16 M 176 140 l 8 16 M 230 116 l -4 -18 M 300 106 l 4 16 M 340 110 l -4 -16 M 370 120 l 4 14" fill="none" stroke-width="2"></path>
+<path d="M 76 140 C 82 134, 90 134, 94 140 M 110 126 C 116 120, 124 122, 126 128 M 150 128 C 156 122, 164 124, 166 130 M 200 104 C 206 98, 214 100, 216 106 M 330 92 C 336 86, 344 88, 346 94 M 360 104 C 366 100, 372 102, 374 108 M 70 176 C 76 172, 82 174, 84 180 M 64 232 C 70 238, 78 238, 82 232 M 100 222 C 106 228, 114 228, 118 222 M 140 214 C 146 220, 154 220, 158 214" fill="none" stroke-width="2"></path>
+<path d="M 54 248 l -12 4 M 56 252 l -8 10 M 64 254 l -2 12" fill="none" stroke-width="3.5"></path>
+<circle cx="272" cy="94" r="17" fill="#000000" stroke-width="3.5"></circle>
+<circle cx="272" cy="94" r="8" fill="none" stroke-width="2.5"></circle>
+<circle cx="272" cy="94" r="2.5" fill="#ffffff" stroke-width="0"></circle>
+<path d="M 430 132 C 438 150, 444 166, 448 182 M 448 182 l -9 6 M 448 182 l 1 11 M 448 182 l 9 6" fill="none" stroke-width="3.5"></path>
+<path d="M 410 140 C 414 158, 414 172, 410 186 M 410 186 l -9 4 M 410 186 l -2 10 M 410 186 l 8 6" fill="none" stroke-width="3"></path>
+<path d="M 410 88 C 384 50, 420 22, 446 50 C 454 62, 446 76, 434 80" fill="#000000" stroke-width="3.5"></path>
+<path d="M 416 76 C 406 56, 428 42, 440 56" fill="none" stroke-width="2"></path>
+<path d="M 424 72 L 416 12 L 440 60 L 450 0 L 460 58 L 486 10 L 474 64 Z" fill="#000000" stroke-width="3"></path>
+<path d="M 424 62 L 418 22 M 440 56 L 448 10 M 460 54 L 480 18" fill="none" stroke-width="2"></path>
+<path d="M 388 112 C 396 82, 430 64, 462 62 L 494 58 C 502 57, 506 64, 500 70 L 478 82 L 496 92 C 488 106, 462 120, 440 128 C 420 138, 404 146, 398 140 Z" fill="#000000" stroke-width="3.5"></path>
+<path d="M 486 74 L 490 82 L 494 72 Z M 480 79 L 483 86 L 487 80 Z M 486 90 L 489 84 L 492 90 Z" fill="#ffffff" stroke-width="1"></path>
+<path d="M 410 108 C 420 114, 432 116, 444 114 M 404 126 l 14 -4" fill="none" stroke-width="2"></path>
+<circle cx="458" cy="84" r="11" fill="#ffffff" stroke-width="2"></circle>
+<circle cx="462" cy="86" r="4.5" fill="#000000" stroke-width="0"></circle>
+<path d="M 440 72 L 472 80" fill="none" stroke-width="4"></path>
+<circle cx="500" cy="63" r="3.5" fill="#ffffff" stroke-width="0"></circle>
+<path d="M 494 66 L 528 52 M 496 70 L 532 70 M 490 74 L 522 88" fill="none" stroke-width="1.5"></path>
+</g>
+</svg><span>PUNKREAS</span></a>
+    <nav aria-label="Secciones">
+      <ul>
+        <li><a href="#carcasas">Carcasas</a></li>
+        <li><a href="#como">Cómo se pone</a></li>
+        <li><a href="#medidas">Medidas</a></li>
+        <li><a href="#a-medida">A medida</a></li>
+        <li><a href="#pedidos">Pedidos</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <div class="portada">
+      <div><svg class="rata" viewBox="0 0 520 300" role="img" aria-label="Rata punk gruñendo con la cabeza en alto y cresta filosa; su cuerpo arqueado es un páncreas con lóbulos y conducto, y lleva un sensor en el lomo" >
+<defs>
+<filter id="tinta" x="-10%" y="-20%" width="120%" height="140%">
+<feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="r"></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="r" scale="5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="roto" x="-5%" y="-10%" width="110%" height="120%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3" result="g"></feTurbulence>
+<feDisplacementMap in="SourceGraphic" in2="g" scale="4" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<pattern id="rayado" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)">
+<line x1="0" y1="0" x2="0" y2="5" stroke="#ffffff" stroke-width="1.4"></line>
+</pattern>
+<linearGradient id="fundido" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0.45" stop-color="#000000"></stop>
+<stop offset="0.85" stop-color="#ffffff"></stop>
+</linearGradient>
+<mask id="sombra" maskUnits="userSpaceOnUse" x="0" y="0" width="520" height="300">
+<rect x="0" y="60" width="520" height="200" fill="url(#fundido)"></rect>
+</mask>
+</defs>
+<g filter="url(#tinta)" stroke-linecap="round" stroke-linejoin="round" stroke="#ffffff">
+<path d="M 58 168 C 20 160, 6 120, 24 90 C 40 64, 30 44, 10 36" fill="none" stroke-width="3"></path>
+<path id="pancreas" d="M 58.0 176.0 Q 52.4 167.2 60.0 160.1 Q 56.7 151.4 62.9 144.4 Q 62.4 134.6 71.6 131.1 Q 73.8 121.2 83.9 121.0 Q 88.7 112.1 98.5 114.4 Q 106.5 107.8 114.3 114.7 Q 123.7 110.4 129.8 118.8 Q 138.3 112.7 145.7 120.1 Q 151.5 113.2 160.4 114.0 Q 164.0 105.1 173.6 105.0 Q 178.0 96.4 187.6 97.3 Q 193.4 90.3 202.4 91.1 Q 208.5 84.5 217.4 85.5 Q 223.3 77.1 232.8 81.1 Q 239.4 72.8 248.6 78.2 Q 255.8 70.9 264.5 76.3 Q 272.2 70.9 280.4 75.4 Q 288.6 69.5 296.4 75.9 Q 305.1 72.1 312.3 78.1 Q 321.6 74.0 327.8 82.0 Q 337.0 80.0 343.0 87.2 Q 352.8 84.5 357.7 93.5 Q 368.1 91.2 371.8 101.1 Q 382.3 99.8 385.1 110.1 Q 395.4 110.5 396.8 120.8 Q 406.4 124.9 403.9 135.0 Q 406.7 144.4 398.2 149.3 Q 391.2 155.8 382.9 151.0 Q 373.2 154.9 367.7 146.0 Q 358.8 147.5 352.5 140.9 Q 343.3 143.0 337.5 135.5 Q 328.0 138.5 322.3 130.4 Q 313.3 134.1 306.6 127.1 Q 298.0 132.6 290.7 125.4 Q 282.7 129.9 274.7 125.2 Q 267.3 130.4 258.8 127.3 Q 252.4 133.8 243.5 131.9 Q 239.0 141.4 228.9 138.4 Q 224.5 146.4 215.3 146.9 Q 212.5 155.7 203.4 157.6 Q 203.0 167.0 194.2 170.6 Q 197.0 180.1 188.7 185.6 Q 190.8 195.6 181.5 199.8 Q 179.9 208.7 171.6 212.4 Q 169.1 222.6 158.7 221.7 Q 152.9 230.0 143.4 226.4 Q 136.6 232.8 127.7 229.6 Q 120.6 235.5 112.0 232.4 Q 105.4 239.8 96.4 235.9 Q 92.7 245.0 82.9 244.4 Q 78.3 252.5 69.1 252.1 Q 60.2 253.9 54.3 247.2 Q 50.1 238.8 58.1 234.0 Q 52.5 226.6 58.9 219.9 Q 49.2 216.9 50.1 206.8 Q 47.0 198.2 53.1 191.2 Q 49.7 181.7 58.0 176.0 Z" fill="#000000" stroke-width="3.5"></path>
+<path d="M 58.0 176.0 Q 52.4 167.2 60.0 160.1 Q 56.7 151.4 62.9 144.4 Q 62.4 134.6 71.6 131.1 Q 73.8 121.2 83.9 121.0 Q 88.7 112.1 98.5 114.4 Q 106.5 107.8 114.3 114.7 Q 123.7 110.4 129.8 118.8 Q 138.3 112.7 145.7 120.1 Q 151.5 113.2 160.4 114.0 Q 164.0 105.1 173.6 105.0 Q 178.0 96.4 187.6 97.3 Q 193.4 90.3 202.4 91.1 Q 208.5 84.5 217.4 85.5 Q 223.3 77.1 232.8 81.1 Q 239.4 72.8 248.6 78.2 Q 255.8 70.9 264.5 76.3 Q 272.2 70.9 280.4 75.4 Q 288.6 69.5 296.4 75.9 Q 305.1 72.1 312.3 78.1 Q 321.6 74.0 327.8 82.0 Q 337.0 80.0 343.0 87.2 Q 352.8 84.5 357.7 93.5 Q 368.1 91.2 371.8 101.1 Q 382.3 99.8 385.1 110.1 Q 395.4 110.5 396.8 120.8 Q 406.4 124.9 403.9 135.0 Q 406.7 144.4 398.2 149.3 Q 391.2 155.8 382.9 151.0 Q 373.2 154.9 367.7 146.0 Q 358.8 147.5 352.5 140.9 Q 343.3 143.0 337.5 135.5 Q 328.0 138.5 322.3 130.4 Q 313.3 134.1 306.6 127.1 Q 298.0 132.6 290.7 125.4 Q 282.7 129.9 274.7 125.2 Q 267.3 130.4 258.8 127.3 Q 252.4 133.8 243.5 131.9 Q 239.0 141.4 228.9 138.4 Q 224.5 146.4 215.3 146.9 Q 212.5 155.7 203.4 157.6 Q 203.0 167.0 194.2 170.6 Q 197.0 180.1 188.7 185.6 Q 190.8 195.6 181.5 199.8 Q 179.9 208.7 171.6 212.4 Q 169.1 222.6 158.7 221.7 Q 152.9 230.0 143.4 226.4 Q 136.6 232.8 127.7 229.6 Q 120.6 235.5 112.0 232.4 Q 105.4 239.8 96.4 235.9 Q 92.7 245.0 82.9 244.4 Q 78.3 252.5 69.1 252.1 Q 60.2 253.9 54.3 247.2 Q 50.1 238.8 58.1 234.0 Q 52.5 226.6 58.9 219.9 Q 49.2 216.9 50.1 206.8 Q 47.0 198.2 53.1 191.2 Q 49.7 181.7 58.0 176.0 Z" fill="url(#rayado)" stroke="none" mask="url(#sombra)"></path>
+<path d="M 66 214 C 100 182, 150 150, 200 128 C 250 106, 320 102, 396 132" fill="none" stroke-width="3"></path>
+<path d="M 92 192 l -14 -14 M 118 172 l 8 18 M 150 152 l -10 -16 M 176 140 l 8 16 M 230 116 l -4 -18 M 300 106 l 4 16 M 340 110 l -4 -16 M 370 120 l 4 14" fill="none" stroke-width="2"></path>
+<path d="M 76 140 C 82 134, 90 134, 94 140 M 110 126 C 116 120, 124 122, 126 128 M 150 128 C 156 122, 164 124, 166 130 M 200 104 C 206 98, 214 100, 216 106 M 330 92 C 336 86, 344 88, 346 94 M 360 104 C 366 100, 372 102, 374 108 M 70 176 C 76 172, 82 174, 84 180 M 64 232 C 70 238, 78 238, 82 232 M 100 222 C 106 228, 114 228, 118 222 M 140 214 C 146 220, 154 220, 158 214" fill="none" stroke-width="2"></path>
+<path d="M 54 248 l -12 4 M 56 252 l -8 10 M 64 254 l -2 12" fill="none" stroke-width="3.5"></path>
+<circle cx="272" cy="94" r="17" fill="#000000" stroke-width="3.5"></circle>
+<circle cx="272" cy="94" r="8" fill="none" stroke-width="2.5"></circle>
+<circle cx="272" cy="94" r="2.5" fill="#ffffff" stroke-width="0"></circle>
+<path d="M 430 132 C 438 150, 444 166, 448 182 M 448 182 l -9 6 M 448 182 l 1 11 M 448 182 l 9 6" fill="none" stroke-width="3.5"></path>
+<path d="M 410 140 C 414 158, 414 172, 410 186 M 410 186 l -9 4 M 410 186 l -2 10 M 410 186 l 8 6" fill="none" stroke-width="3"></path>
+<path d="M 410 88 C 384 50, 420 22, 446 50 C 454 62, 446 76, 434 80" fill="#000000" stroke-width="3.5"></path>
+<path d="M 416 76 C 406 56, 428 42, 440 56" fill="none" stroke-width="2"></path>
+<path d="M 424 72 L 416 12 L 440 60 L 450 0 L 460 58 L 486 10 L 474 64 Z" fill="#000000" stroke-width="3"></path>
+<path d="M 424 62 L 418 22 M 440 56 L 448 10 M 460 54 L 480 18" fill="none" stroke-width="2"></path>
+<path d="M 388 112 C 396 82, 430 64, 462 62 L 494 58 C 502 57, 506 64, 500 70 L 478 82 L 496 92 C 488 106, 462 120, 440 128 C 420 138, 404 146, 398 140 Z" fill="#000000" stroke-width="3.5"></path>
+<path d="M 486 74 L 490 82 L 494 72 Z M 480 79 L 483 86 L 487 80 Z M 486 90 L 489 84 L 492 90 Z" fill="#ffffff" stroke-width="1"></path>
+<path d="M 410 108 C 420 114, 432 116, 444 114 M 404 126 l 14 -4" fill="none" stroke-width="2"></path>
+<circle cx="458" cy="84" r="11" fill="#ffffff" stroke-width="2"></circle>
+<circle cx="462" cy="86" r="4.5" fill="#000000" stroke-width="0"></circle>
+<path d="M 440 72 L 472 80" fill="none" stroke-width="4"></path>
+<circle cx="500" cy="63" r="3.5" fill="#ffffff" stroke-width="0"></circle>
+<path d="M 494 66 L 528 52 M 496 70 L 532 70 M 490 74 L 522 88" fill="none" stroke-width="1.5"></path>
+</g>
+</svg></div>
+      <div>
+        <h1>PUNKREAS</h1>
+        <p class="bajada">Accesorios para tu sensor</p>
+        <p class="intro">Carcasas impresas en 3D para el sensor de glucosa. Se calzan a presión y dejan ver el sensor, así lo que llevás en el brazo también dice algo de vos.</p>
+        <a class="boton" href="#carcasas">Ver las carcasas</a>
+      </div>
+    </div>
+
+    <section id="carcasas" aria-labelledby="t-carcasas">
+      <p class="rotulo">Catálogo</p>
+      <h2 id="t-carcasas">Carcasas</h2>
+      <div class="catalogo">
+      <article class="pieza">
+        <div class="pieza-img">
+          <svg viewBox="-18.5 -18.5 37 37" role="img" aria-label="Vista de arriba de la carcasa Mordida">
+            <circle cx="0" cy="0" r="14.6" class="sensor"></circle>
+            <circle cx="0" cy="0" r="2.6" class="sensor-centro"></circle>
+            <path d="M-0.54 16.89 L-1.99 16.78 L-3.95 16.43 L-5.22 16.07 L-7.08 15.35 L-8.26 14.75 L-9.93 13.67 L-11.47 12.41 L-12.41 11.47 L-13.27 10.46 L-14.41 8.83 L-15.35 7.08 L-15.86 5.85 L-16.43 3.95 L-16.69 2.64 L-16.88 0.80 L-16.89 -0.66 L-16.69 -2.64 L-16.43 -3.95 L-16.07 -5.22 L-15.35 -7.08 L-14.75 -8.26 L-13.67 -9.93 L-12.41 -11.47 L-11.47 -12.41 L-10.05 -13.58 L-8.83 -14.41 L-7.08 -15.35 L-5.85 -15.86 L-3.95 -16.43 L-2.64 -16.69 L-0.80 -16.88 L0.66 -16.89 L2.64 -16.69 L3.95 -16.43 L5.22 -16.07 L7.08 -15.35 L8.26 -14.75 L9.93 -13.67 L11.47 -12.41 L12.41 -11.47 L13.27 -10.46 L14.41 -8.83 L15.35 -7.08 L15.86 -5.85 L16.43 -3.95 L16.69 -2.64 L16.88 -0.80 L16.89 0.66 L16.69 2.64 L16.43 3.95 L16.07 5.22 L15.35 7.08 L14.75 8.26 L13.67 9.93 L12.41 11.47 L11.47 12.41 L10.05 13.58 L8.83 14.41 L7.08 15.35 L5.85 15.86 L3.95 16.43 L2.64 16.69 L1.33 16.85 L-0.54 16.89Z M-0.09 -12.70 L-0.30 -7.21 L-0.86 -6.68 L-3.74 -6.73 L-4.28 -7.28 L-4.30 -11.95 L-4.59 -11.84 L-4.86 -8.17 L-5.44 -7.66 L-6.93 -7.74 L-7.45 -8.30 L-7.39 -10.33 L-7.61 -10.17 L-8.37 -5.59 L-9.04 -3.10 L-9.25 -2.95 L-9.43 -3.07 L-10.46 -5.45 L-10.34 -7.36 L-11.32 -5.77 L-11.92 -4.40 L-12.35 -2.96 L-12.66 -1.00 L-12.66 1.00 L-12.35 2.96 L-11.73 4.86 L-10.75 6.77 L-10.89 5.49 L-10.64 4.28 L-10.39 4.04 L-10.01 3.98 L-9.70 4.13 L-8.96 5.47 L-7.96 9.89 L-7.79 10.03 L-7.29 7.44 L-5.77 5.61 L-5.56 5.54 L-5.39 5.72 L-5.15 8.04 L-5.39 11.50 L-4.75 11.77 L-4.94 9.52 L-4.45 8.93 L-3.06 8.78 L-2.45 9.26 L-2.04 12.53 L-1.95 12.55 L-1.67 8.56 L-1.09 8.05 L0.77 8.15 L1.23 8.65 L1.46 8.34 L3.03 8.09 L3.65 8.54 L4.15 11.34 L4.41 8.89 L5.01 8.40 L6.13 8.50 L6.63 9.09 L6.51 10.90 L6.58 10.86 L7.23 6.45 L8.86 4.50 L9.05 4.43 L9.23 4.64 L9.07 8.89 L9.86 8.00 L9.31 5.16 L9.73 4.52 L10.39 4.38 L11.04 4.80 L11.28 5.84 L11.73 4.86 L12.22 3.45 L12.66 1.00 L12.66 -1.00 L12.22 -3.45 L11.32 -5.77 L10.07 -7.74 L10.17 -5.85 L9.25 -3.08 L9.08 -2.94 L8.86 -3.08 L8.16 -5.32 L7.42 -10.02 L7.50 -8.43 L6.98 -7.85 L5.49 -7.75 L4.90 -8.25 L4.58 -11.84 L4.31 -11.95 L4.33 -7.30 L3.79 -6.75 L0.91 -6.67 L0.35 -7.20 L0.08 -12.70 L-0.09 -12.70Z M1.16 12.64 L1.51 12.61 L1.23 10.61 L1.18 12.29 L1.16 12.64Z" class="linea" fill-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="pieza-txt">
+          <h3>Mordida</h3>
+          <p>Boca abierta con colmillos y dientes chuecos. El centro queda libre y se ve el sensor.</p>
+          <dl>
+            <div><dt>Medida</dt><dd>Ø interior 30,6 mm</dd></div>
+            <div><dt>Material</dt><dd>PETG</dd></div>
+            <div><dt>Precio</dt><dd>$4.000</dd></div>
+          </dl>
+        </div>
+      </article>
+      <article class="pieza">
+        <div class="pieza-img">
+          <svg viewBox="-18.5 -18.5 37 37" role="img" aria-label="Vista de arriba de la carcasa Hoz y martillo">
+            <circle cx="0" cy="0" r="14.6" class="sensor"></circle>
+            <circle cx="0" cy="0" r="2.6" class="sensor-centro"></circle>
+            <path d="M-0.54 16.89 L-1.99 16.78 L-3.95 16.43 L-5.22 16.07 L-7.08 15.35 L-8.26 14.75 L-9.93 13.67 L-11.47 12.41 L-12.41 11.47 L-13.27 10.46 L-14.41 8.83 L-15.35 7.08 L-15.86 5.85 L-16.43 3.95 L-16.69 2.64 L-16.88 0.80 L-16.89 -0.66 L-16.69 -2.64 L-16.43 -3.95 L-16.07 -5.22 L-15.35 -7.08 L-14.75 -8.26 L-13.67 -9.93 L-12.41 -11.47 L-11.47 -12.41 L-10.05 -13.58 L-8.83 -14.41 L-7.08 -15.35 L-5.85 -15.86 L-3.95 -16.43 L-2.64 -16.69 L-0.80 -16.88 L0.66 -16.89 L2.64 -16.69 L3.95 -16.43 L5.22 -16.07 L7.08 -15.35 L8.26 -14.75 L9.93 -13.67 L11.47 -12.41 L12.41 -11.47 L13.27 -10.46 L14.41 -8.83 L15.35 -7.08 L15.86 -5.85 L16.43 -3.95 L16.69 -2.64 L16.88 -0.80 L16.89 0.66 L16.69 2.64 L16.43 3.95 L16.07 5.22 L15.35 7.08 L14.75 8.26 L13.67 9.93 L12.41 11.47 L11.47 12.41 L10.05 13.58 L8.83 14.41 L7.08 15.35 L5.85 15.86 L3.95 16.43 L2.64 16.69 L1.33 16.85 L-0.54 16.89Z M0.50 12.69 L2.96 12.35 L4.86 11.73 L6.64 10.83 L8.40 9.52 L5.72 6.85 L4.40 7.61 L3.14 8.08 L1.81 8.34 L0.46 8.39 L-0.87 8.24 L-2.18 7.87 L-3.40 7.31 L-4.59 6.50 L-5.25 6.97 L-5.60 6.91 L-5.71 6.75 L-9.00 8.96 L-8.25 9.66 L-7.06 10.56 L-4.86 11.73 L-3.45 12.22 L-1.99 12.54 L0.50 12.69Z M-0.29 -12.69 L-1.99 -12.54 L-3.45 -12.22 L-4.86 -11.73 L-6.21 -11.08 L-7.46 -10.27 L-8.62 -9.33 L-9.66 -8.25 L-10.83 -6.64 L-11.53 -5.32 L-12.22 -3.45 L-12.54 -1.99 L-12.69 -0.50 L-12.66 1.00 L-12.35 2.96 L-11.92 4.40 L-11.32 5.77 L-10.64 6.94 L-7.16 4.59 L-7.28 4.42 L-7.21 4.07 L-6.20 3.49 L-5.89 3.54 L-4.88 4.51 L-3.66 5.29 L-2.59 5.74 L-1.46 6.01 L-0.01 6.09 L1.15 5.96 L2.53 5.54 L3.76 4.89 L-4.18 -3.05 L-6.40 -0.82 L-6.33 -0.47 L-6.76 -0.05 L-7.04 -0.05 L-9.45 -2.45 L-9.45 -2.73 L-9.02 -3.16 L-8.67 -3.09 L-3.75 -8.00 L-3.26 -8.00 L-1.49 -6.23 L-1.49 -5.74 L-2.55 -4.68 L5.46 3.34 L6.29 2.06 L6.89 0.43 L7.10 -1.30 L6.89 -3.03 L6.42 -4.40 L5.69 -5.65 L4.93 -6.53 L4.28 -7.11 L3.57 -7.61 L2.63 -8.09 L2.48 -8.38 L2.78 -8.57 L4.40 -8.01 L6.13 -6.95 L7.56 -5.52 L8.61 -3.80 L8.98 -2.85 L9.29 -1.55 L9.39 -0.54 L9.34 0.81 L9.16 1.80 L8.75 3.09 L8.14 4.29 L7.42 5.29 L9.98 7.85 L11.08 6.21 L11.92 4.40 L12.35 2.96 L12.66 1.00 L12.66 -1.00 L12.46 -2.48 L12.08 -3.92 L11.32 -5.77 L10.27 -7.46 L9.33 -8.62 L8.25 -9.66 L6.64 -10.83 L5.32 -11.53 L3.45 -12.22 L1.49 -12.61 L-0.29 -12.69Z" class="linea" fill-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="pieza-txt">
+          <h3>Hoz y martillo</h3>
+          <p>El símbolo en relieve, con el martillo cruzando por encima de la hoja.</p>
+          <dl>
+            <div><dt>Medida</dt><dd>Ø interior 30,6 mm</dd></div>
+            <div><dt>Material</dt><dd>PETG</dd></div>
+            <div><dt>Precio</dt><dd>$4.000</dd></div>
+          </dl>
+        </div>
+      </article>
+      <article class="pieza">
+        <div class="pieza-img">
+          <svg viewBox="-19 -22 38 44" role="img" aria-label="Vista de arriba de la carcasa Neotribal">
+            <circle cx="0" cy="0" r="14.6" class="sensor"></circle>
+            <circle cx="0" cy="0" r="2.6" class="sensor-centro"></circle>
+            <path d="M9.39 -13.57 L8.06 -14.40 L6.31 -15.24 L4.48 -15.88 L2.42 -16.32 L0.66 -18.01 L-0.42 -19.32 L-1.29 -20.64 L-1.55 -20.73 L-1.65 -20.68 L-1.75 -20.42 L-0.47 -16.49 L-3.22 -16.18 L-5.71 -15.48 L-7.49 -14.70 L-9.17 -13.72 L-10.72 -12.55 L-11.98 -11.34 L-15.03 -10.62 L-17.03 -10.36 L-17.22 -10.17 L-17.22 -10.04 L-17.05 -9.83 L-13.79 -9.06 L-14.98 -6.91 L-15.69 -5.10 L-16.18 -3.22 L-16.45 -1.29 L-16.45 1.29 L-16.18 3.22 L-15.69 5.10 L-14.76 7.38 L-15.12 10.49 L-15.56 12.46 L-15.44 12.70 L-15.33 12.75 L-15.07 12.66 L-13.23 9.86 L-12.12 11.20 L-11.17 12.14 L-9.70 13.35 L-8.62 14.07 L-6.91 14.98 L-5.71 15.48 L-3.85 16.04 L-2.42 16.32 L-0.66 18.01 L0.42 19.32 L1.29 20.64 L1.55 20.73 L1.65 20.68 L1.75 20.42 L0.47 16.49 L3.22 16.18 L5.71 15.48 L7.49 14.70 L9.17 13.72 L10.72 12.55 L11.98 11.34 L15.03 10.62 L17.03 10.36 L17.22 10.17 L17.22 10.04 L17.05 9.83 L13.79 9.06 L14.98 6.91 L15.69 5.10 L16.18 3.22 L16.45 1.29 L16.45 -1.29 L16.18 -3.22 L15.69 -5.10 L14.76 -7.38 L15.12 -10.49 L15.56 -12.46 L15.44 -12.70 L15.33 -12.75 L15.07 -12.66 L13.23 -9.86 L11.67 -11.67 L10.72 -12.55 L9.39 -13.57Z M-0.43 5.89 L-0.92 6.91 L-1.42 8.48 L-1.94 10.78 L-2.39 13.38 L-3.62 11.66 L-4.35 10.22 L-4.80 8.77 L-4.88 7.37 L-4.55 6.21 L-3.89 5.36 L-2.85 4.73 L-1.40 4.40 L-2.05 4.14 L-2.94 3.98 L-3.85 4.01 L-4.73 4.23 L-5.58 4.65 L-6.34 5.27 L-6.84 5.86 L-7.35 6.75 L-7.79 5.36 L-8.69 6.02 L-9.60 4.27 L-10.91 2.42 L-12.29 0.95 L-14.09 -0.57 L-13.93 -2.21 L-13.57 -3.83 L-13.03 -5.40 L-12.52 -6.47 L-11.45 -4.67 L-10.34 -3.32 L-9.15 -2.35 L-8.98 -2.96 L-8.62 -1.90 L-8.29 -1.25 L-7.66 -0.39 L-7.16 0.10 L-6.29 0.67 L-4.95 1.14 L-3.83 1.27 L-2.60 1.20 L-4.10 0.77 L-5.21 0.13 L-5.96 -0.65 L-6.43 -1.63 L-3.40 -5.60 L-4.80 -4.47 L-6.58 -3.50 L-6.38 -4.64 L-5.99 -5.81 L-4.88 -7.90 L-3.29 -9.90 L-2.19 -10.91 L-1.14 -11.70 L-1.02 -5.40 L-2.20 -5.40 L0.00 2.60 L2.20 -5.40 L1.02 -5.40 L1.14 -11.70 L2.19 -10.91 L3.29 -9.90 L4.88 -7.90 L5.99 -5.81 L6.38 -4.64 L6.58 -3.50 L4.80 -4.47 L3.40 -5.60 L6.43 -1.63 L5.96 -0.65 L5.21 0.13 L4.10 0.77 L2.60 1.20 L3.83 1.27 L4.95 1.14 L6.29 0.67 L7.16 0.10 L7.66 -0.39 L8.29 -1.25 L8.62 -1.90 L8.98 -2.96 L9.15 -2.35 L10.34 -3.32 L11.45 -4.67 L12.52 -6.47 L13.03 -5.40 L13.57 -3.83 L13.93 -2.21 L14.09 -0.57 L12.29 0.95 L10.91 2.42 L9.60 4.27 L8.69 6.02 L7.79 5.36 L7.35 6.75 L6.84 5.86 L6.34 5.27 L5.58 4.65 L4.73 4.23 L3.85 4.01 L2.94 3.98 L2.05 4.14 L1.40 4.40 L2.85 4.73 L3.89 5.36 L4.55 6.21 L4.88 7.37 L4.80 8.77 L4.35 10.22 L3.62 11.66 L2.39 13.38 L1.67 9.48 L0.92 6.91 L0.49 5.98 L0.13 5.49 L0.00 5.40 L-0.13 5.49 L-0.43 5.89Z M7.86 8.48 L7.73 7.83 L8.53 7.91 L9.74 8.26 L10.91 8.93 L9.57 10.35 L7.69 11.82 L7.93 10.08 L7.86 8.48Z M7.12 -12.17 L8.73 -11.07 L9.86 -10.07 L8.45 -9.31 L7.79 -10.90 L7.12 -12.17Z M-7.87 10.77 L-7.69 11.82 L-9.57 10.35 L-10.91 8.93 L-10.21 8.48 L-9.50 8.17 L-8.53 7.91 L-7.73 7.83 L-7.92 9.10 L-7.87 10.77Z M-9.86 -10.07 L-8.73 -11.07 L-7.12 -12.17 L-7.79 -10.90 L-8.45 -9.31 L-9.86 -10.07Z M-12.04 3.37 L-11.03 3.91 L-10.12 4.54 L-9.32 5.26 L-8.70 6.03 L-10.01 7.31 L-11.06 8.74 L-12.02 7.37 L-12.80 5.90 L-13.41 4.36 L-13.84 2.68 L-12.04 3.37Z M8.70 6.03 L9.91 4.71 L11.03 3.91 L12.31 3.25 L13.84 2.68 L13.41 4.36 L12.80 5.90 L12.02 7.37 L11.06 8.74 L10.01 7.31 L8.70 6.03Z M-9.22 -4.78 L-10.14 -4.90 L-11.03 -5.26 L-11.89 -5.85 L-12.52 -6.49 L-11.41 -8.29 L-10.25 -9.68 L-8.89 -7.82 L-9.18 -6.16 L-9.22 -4.78Z M10.36 -4.97 L9.22 -4.78 L9.18 -6.16 L8.89 -7.82 L10.25 -9.68 L11.41 -8.29 L12.52 -6.49 L11.89 -5.85 L11.24 -5.38 L10.36 -4.97Z" class="linea" fill-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="pieza-txt">
+          <h3>Neotribal</h3>
+          <p>Ganchos y púas simétricas, con espinas que salen del borde.</p>
+          <dl>
+            <div><dt>Medida</dt><dd>Ø interior 29,6 o 30,6 mm</dd></div>
+            <div><dt>Material</dt><dd>PETG</dd></div>
+            <div><dt>Precio</dt><dd>$4.000</dd></div>
+          </dl>
+        </div>
+      </article>
+      <article class="pieza">
+        <div class="pieza-img">
+          <svg viewBox="-18.5 -18.5 37 37" role="img" aria-label="Vista de arriba de la carcasa Metal fundido">
+            <circle cx="0" cy="0" r="14.6" class="sensor"></circle>
+            <circle cx="0" cy="0" r="2.6" class="sensor-centro"></circle>
+            <path d="M7.36 -15.09 L10.62 -13.56 L11.10 -13.20 L11.84 -12.29 L12.81 -10.00 L13.36 -9.02 L15.36 -6.83 L16.04 -5.85 L16.81 -4.19 L17.68 -1.85 L17.90 -0.60 L17.77 0.60 L17.26 1.80 L15.97 3.99 L15.63 5.09 L15.23 7.45 L14.74 8.48 L13.95 9.39 L12.19 10.98 L10.42 13.35 L9.60 14.21 L8.63 14.94 L6.05 16.64 L4.92 17.22 L4.31 17.39 L3.10 17.43 L2.45 17.29 L-0.01 16.31 L-1.11 16.08 L-4.07 16.27 L-5.21 16.10 L-6.31 15.64 L-11.09 13.20 L-12.00 12.44 L-15.34 8.84 L-15.96 7.82 L-16.15 7.22 L-16.21 5.91 L-15.84 3.95 L-15.74 2.76 L-15.93 1.68 L-16.72 -0.60 L-16.82 -1.19 L-16.82 -2.35 L-16.11 -6.52 L-15.72 -7.69 L-15.10 -8.70 L-13.08 -10.97 L-11.67 -12.98 L-10.81 -13.79 L-9.68 -14.31 L-9.04 -14.44 L-7.10 -14.57 L-5.97 -14.80 L-4.97 -15.28 L-2.90 -16.55 L-1.79 -16.95 L-0.60 -17.17 L1.84 -17.45 L3.09 -17.45 L3.71 -17.35 L4.84 -16.94 L7.36 -15.09Z M4.77 1.43 L5.47 1.93 L7.05 2.05 L7.68 1.86 L7.92 1.67 L8.20 1.16 L8.23 0.80 L7.94 0.03 L6.80 -0.99 L6.07 -1.28 L5.77 -1.27 L5.16 -0.98 L4.79 -0.45 L4.55 0.48 L4.62 1.14 L4.77 1.43Z M0.99 2.25 L1.52 1.92 L1.80 1.47 L2.85 -2.15 L2.79 -2.93 L2.63 -3.24 L2.06 -3.69 L0.12 -4.37 L-0.78 -4.35 L-3.53 -2.65 L-4.06 -1.94 L-4.09 -1.29 L-3.64 -0.48 L-0.12 2.09 L0.63 2.30 L0.99 2.25Z M-6.95 -1.18 L-7.61 -1.57 L-13.47 -2.70 L-13.94 -2.43 L-14.19 -0.49 L-14.06 1.98 L-13.50 4.40 L-13.33 4.88 L-12.96 5.28 L-12.25 5.59 L-11.89 5.59 L-11.17 5.25 L-10.13 4.07 L-9.75 4.01 L-9.28 4.09 L-8.88 3.87 L-8.70 3.37 L-8.84 2.98 L-8.83 2.60 L-6.87 0.35 L-6.65 -0.33 L-6.68 -0.63 L-6.95 -1.18Z M3.94 5.00 L3.76 5.56 L4.06 6.39 L8.41 10.28 L9.11 10.52 L9.70 10.37 L10.87 9.13 L11.82 7.84 L12.17 6.44 L12.09 5.66 L11.90 5.35 L11.21 4.90 L5.07 4.35 L4.27 4.59 L3.94 5.00Z M-2.32 9.45 L-3.16 9.28 L-7.00 10.21 L-7.69 10.69 L-7.84 10.96 L-7.91 11.54 L-7.77 11.86 L-7.53 12.04 L-5.33 13.16 L-3.44 13.78 L-1.55 14.07 L-1.20 13.80 L-1.15 13.62 L-1.69 10.31 L-2.08 9.63 L-2.32 9.45Z M6.90 11.72 L2.56 7.82 L1.83 7.53 L1.53 7.54 L1.00 7.78 L0.78 8.00 L0.52 8.84 L1.33 13.70 L1.73 14.05 L3.44 13.78 L5.77 12.98 L6.81 12.46 L7.00 11.95 L6.90 11.72Z M-3.19 -13.83 L-4.85 -13.35 L-6.22 -12.77 L-7.93 -11.78 L-8.10 -11.37 L-8.05 -11.11 L-5.00 -5.59 L-4.40 -5.08 L-4.12 -4.99 L-3.27 -5.11 L-2.26 -5.75 L-1.67 -6.67 L-2.09 -12.76 L-2.45 -13.52 L-2.68 -13.71 L-3.19 -13.83Z M4.93 -6.02 L7.76 -10.06 L7.97 -10.91 L7.78 -11.50 L7.17 -12.26 L4.85 -13.35 L2.47 -13.98 L1.24 -14.14 L0.74 -14.03 L0.50 -13.85 L0.17 -13.31 L0.10 -12.98 L0.51 -7.43 L0.86 -6.67 L1.34 -6.31 L3.47 -5.57 L4.33 -5.59 L4.93 -6.02Z M-4.76 1.51 L-5.05 1.56 L-5.64 1.90 L-9.23 5.97 L-9.51 6.70 L-9.51 7.00 L-9.26 7.53 L-9.04 7.74 L-8.38 7.98 L-8.12 7.98 L-1.78 6.45 L-1.10 6.02 L-0.78 5.63 L-0.56 4.88 L-0.59 4.58 L-1.03 3.86 L-3.94 1.73 L-4.76 1.51Z M14.19 0.47 L14.12 -1.48 L13.89 -2.94 L13.50 -4.40 L12.98 -5.77 L12.30 -7.09 L11.48 -8.35 L10.81 -9.20 L10.30 -9.34 L9.81 -8.96 L7.27 -5.33 L7.07 -4.56 L7.12 -4.23 L7.46 -3.66 L12.54 0.86 L13.22 1.09 L13.52 1.06 L13.93 0.87 L14.19 0.47Z M-9.66 -9.80 L-9.77 -9.85 L-10.30 -9.78 L-11.19 -8.74 L-12.30 -7.09 L-12.98 -5.77 L-13.19 -5.15 L-12.92 -4.67 L-8.66 -3.85 L-7.89 -3.98 L-7.59 -4.18 L-7.27 -4.68 L-7.22 -4.97 L-7.32 -5.54 L-9.66 -9.80Z" class="linea" fill-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="pieza-txt">
+          <h3>Metal fundido</h3>
+          <p>Crestas redondeadas y huecos irregulares, como plata derretida.</p>
+          <dl>
+            <div><dt>Medida</dt><dd>Ø interior 30,6 mm</dd></div>
+            <div><dt>Material</dt><dd>PETG</dd></div>
+            <div><dt>Precio</dt><dd>$4.000</dd></div>
+          </dl>
+        </div>
+      </article>
+      </div>
+      <p class="nota">Compatibles con el sensor FreeStyle Libre 2. Cada carcasa se imprime a pedido, así que se puede hacer en otro color de PETG o ajustar la medida si tu sensor queda justo o flojo.</p>
+    </section>
+
+    <section id="como" aria-labelledby="t-como">
+      <p class="rotulo">Paso a paso</p>
+      <h2 id="t-como">Cómo se pone</h2>
+      <ol class="pasos">
+        <li><h3>Apoyala centrada</h3><p>Poné la carcasa sobre el sensor, con las patitas abrazando el costado.</p></li>
+        <li><h3>Apretá parejo</h3><p>Empujá con el dedo en el medio hasta sentir el clic de las patitas.</p></li>
+        <li><h3>Escaneá</h3><p>La primera vez, chequeá que el lector o el celular lean bien con la carcasa puesta.</p></li>
+      </ol>
+    </section>
+
+    <section id="medidas" aria-labelledby="t-medidas">
+      <p class="rotulo">Para que encastre</p>
+      <h2 id="t-medidas">Medidas</h2>
+      <div class="medidas">
+        <div>
+          <p>Todas las carcasas tienen 6 mm de alto por dentro y seis patitas que enganchan bajo el borde del sensor.</p>
+          <p>Si no sabés cuál te va, medí el diámetro de tu sensor de lado a lado con una regla y mandanos el número junto con el pedido.</p>
+        </div>
+        <div class="tabla">
+          <table>
+            <thead><tr><th scope="col">Talle</th><th scope="col">Ø interior</th><th scope="col">Ø exterior</th></tr></thead>
+            <tbody>
+              <tr><td>Justo</td><td>29,6 mm</td><td>≈ 32,8 mm</td></tr>
+              <tr><td>Estándar</td><td>30,6 mm</td><td>≈ 33,8 mm</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="a-medida" aria-labelledby="t-medida">
+      <p class="rotulo">Tu idea, en tu sensor</p>
+      <h2 id="t-medida">Diseñemos juntxs</h2>
+      <div class="medida-caja">
+        <p>¿Querés una carcasa que no está en el catálogo? Podemos diseñar algo sencillo juntxs: una forma, un símbolo, unas iniciales o un dibujo tuyo pasado a relieve.</p>
+        <p>Mandanos tu idea, aunque sea un garabato en un papel, y la adaptamos para que encastre en tu sensor.</p>
+        <a class="boton" href="https://wa.me/5492644367617?text=Hola%20Punkreas!%20Quiero%20dise%C3%B1ar%20una%20carcasa%20con%20ustedes" target="_blank" rel="noopener">Contanos tu idea</a>
+      </div>
+    </section>
+
+    <section id="pedidos" aria-labelledby="t-pedidos">
+      <p class="rotulo">Escribinos</p>
+      <h2 id="t-pedidos">Pedidos</h2>
+      <div class="contacto">
+        <div class="dato">
+          <span>Instagram</span>
+          <strong id="dato-ig">@_punkreas</strong>
+          <div class="acciones">
+            <a class="ir" href="https://www.instagram.com/_punkreas/" target="_blank" rel="noopener">Ir al perfil</a>
+            <button class="copiar" type="button" data-copiar="dato-ig">Copiar</button>
+          </div>
+        </div>
+        <div class="dato">
+          <span>WhatsApp</span>
+          <strong id="dato-wa">264 436-7617</strong>
+          <div class="acciones">
+            <a class="ir" href="https://wa.me/5492644367617?text=Hola%20Punkreas!%20Quiero%20hacer%20un%20pedido" target="_blank" rel="noopener">Abrir chat</a>
+            <button class="copiar" type="button" data-copiar="dato-wa">Copiar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Punkreas · accesorios para tu sensor</p>
+    <p>Las carcasas son un accesorio estético: no reemplazan el adhesivo del sensor ni las indicaciones de tu médico. Punkreas no está asociado a Abbott; FreeStyle Libre es una marca de Abbott.</p>
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('.copiar').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var el = document.getElementById(b.dataset.copiar);
+    var texto = el.textContent.trim();
+    var listo = function () { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = 'Copiar'; }, 1600); };
+    var seleccionar = function () { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Seleccionado'; };
+    try { navigator.clipboard.writeText(texto).then(listo, seleccionar); } catch (e) { seleccionar(); }
+  });
+});
+</script>
+</body>
+</html>
